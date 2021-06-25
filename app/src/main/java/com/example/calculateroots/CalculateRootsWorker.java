@@ -3,6 +3,7 @@ package com.example.calculateroots;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -15,20 +16,23 @@ public class CalculateRootsWorker extends Worker {
     @Override
     public Result doWork() {
         long inputNumber = getInputData().getLong("inputNumber", 0);
-        long curRoot=2;
-        boolean finishCal=false;
+        long curRoot = 2;
+        boolean finishCal = false;
 
-        while (true){
-            if (inputNumber%curRoot==0){
-                finishCal=true;
+        while (true) {
+            if (inputNumber % curRoot == 0) {
+//                finishCal=true;
                 break;
-            }
-            else {
-                curRoot+=1;
+            } else {
+                curRoot += 1;
             }
         }
         // TODO the root are curRoot and numberToCalculateRootsFor/curRoot
-    return Result.success();
+        return Result.success(new Data.Builder()
+                .putLong("first_root", curRoot)
+                .putLong("second_root", inputNumber / curRoot)
+                .build()
+        );
 
 
     }

@@ -33,16 +33,32 @@ public class SingleCalculateDataBaseImpl implements Serializable {
     }
 
 
-    public void addItem(int inputNumber){
+    public void addItem(long inputNumber){
 
         SingleCalculate newCalculate=new SingleCalculate();
         newCalculate.setText("Calculating roots for "+String.valueOf(inputNumber));
+        newCalculate.setInputNumber(inputNumber);
 
-        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(CalculateRootsWorker.class)
+
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(CalculateRootsWorker.class).addTag("calculate_root")
                 .setInputData(new Data.Builder().putLong("inputNumber",inputNumber).build()).build();
         workManager.enqueue(request);
+        newCalculate.setId(request.getId().toString());
+        this.items.add(newCalculate);
+
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
+
+
     }
 
+    public SingleCalculate getSingleCalculateById(String itemId){
+        for (SingleCalculate singleCalculate : items) {
+            if (singleCalculate.getId().equals(itemId)) {
+                return singleCalculate;
+            }
+        }
+        return null;
+    }
 
     public void deleteItem(SingleCalculate singleCalculate) {
         this.items.remove(singleCalculate);
@@ -53,8 +69,21 @@ public class SingleCalculateDataBaseImpl implements Serializable {
 //        editor.clear();
 //        editor.apply();
 
-//        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
+
+    }
+
+    public void finishProgress(long first_root, long second_root,String ID) {
+        SingleCalculate oldItem = getSingleCalculateById(ID);
+        if (oldItem == null) return;
+        String newText="Roots for "+String.valueOf(oldItem.inputNumber)+": "+
+                String.valueOf(first_root)+" and "+String.valueOf(second_root);
+        SingleCalculate newItem = new SingleCalculate(ID,newText,oldItem.getInputNumber() );
+        items.remove(oldItem);
+        items.add(newItem);
+
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
 
     }
 }

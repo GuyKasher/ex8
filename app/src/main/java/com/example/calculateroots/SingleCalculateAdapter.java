@@ -29,16 +29,20 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
 
         SingleCalculate singleCalculate = this.singleCalculateDataBaseImpl.getCurrentItems().get(position);
 
+
+
         holder.deleteButton.setOnClickListener(v -> {
 
             singleCalculateDataBaseImpl.deleteItem(singleCalculate);
 //            this.todoItemsDataBase.sortItems();
-//            this.notifyDataSetChanged();
+            this.notifyDataSetChanged();
 
         });
 
+        holder.rootProgress.setText(singleCalculate.getText());
 
-        this.notifyDataSetChanged();
+
+//        this.notifyDataSetChanged();
 
 
     }
