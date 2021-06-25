@@ -1,6 +1,7 @@
 package com.example.calculateroots;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -17,17 +18,21 @@ public class CalculateRootsWorker extends Worker {
     public Result doWork() {
         long inputNumber = getInputData().getLong("inputNumber", 0);
         long curRoot = 2;
-        boolean finishCal = false;
+//        boolean finishCal = false;
 
         while (true) {
             if (inputNumber % curRoot == 0) {
 //                finishCal=true;
+
                 break;
             } else {
+                Log.d("num",String.valueOf(curRoot));
+                setProgressAsync(new Data.Builder().putLong("current",curRoot).build());
                 curRoot += 1;
             }
         }
-        // TODO the root are curRoot and numberToCalculateRootsFor/curRoot
+
+
         return Result.success(new Data.Builder()
                 .putLong("first_root", curRoot)
                 .putLong("second_root", inputNumber / curRoot)

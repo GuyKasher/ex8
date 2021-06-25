@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +31,6 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
         SingleCalculate singleCalculate = this.singleCalculateDataBaseImpl.getCurrentItems().get(position);
 
 
-
         holder.deleteButton.setOnClickListener(v -> {
 
             singleCalculateDataBaseImpl.deleteItem(singleCalculate);
@@ -38,7 +38,8 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
             this.notifyDataSetChanged();
 
         });
-
+        int currentPresent= (int) (singleCalculate.getCurrentNumberInCalculation()/singleCalculate.getInputNumber()*100);
+        holder.progressBar.setProgress(currentPresent);
         holder.rootProgress.setText(singleCalculate.getText());
 
 

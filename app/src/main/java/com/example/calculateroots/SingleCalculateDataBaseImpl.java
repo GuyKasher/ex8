@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
@@ -42,7 +43,8 @@ public class SingleCalculateDataBaseImpl implements Serializable {
 
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(CalculateRootsWorker.class).addTag("calculate_root")
                 .setInputData(new Data.Builder().putLong("inputNumber",inputNumber).build()).build();
-        workManager.enqueue(request);
+//        workManager.enqueue(request);
+        workManager.enqueueUniqueWork("job_"+String.valueOf(inputNumber), ExistingWorkPolicy.REPLACE,request);
         newCalculate.setId(request.getId().toString());
         this.items.add(newCalculate);
 
@@ -74,12 +76,32 @@ public class SingleCalculateDataBaseImpl implements Serializable {
 
     }
 
+
+
+    public void inProgress(long curNumber,String ID) {
+        SingleCalculate oldItem = getSingleCalculateById(ID);
+        if (oldItem == null) return;
+
+        SingleCalculate newItem = new SingleCalculate(ID,oldItem.text,oldItem.getInputNumber(),curNumber);
+        items.remove(oldItem);
+        items.add(newItem);
+
+        toDoItemLiveDataMutable.setValue(new ArrayList<>(items));
+
+    }
+
     public void finishProgress(long first_root, long second_root,String ID) {
         SingleCalculate oldItem = getSingleCalculateById(ID);
         if (oldItem == null) return;
-        String newText="Roots for "+String.valueOf(oldItem.inputNumber)+": "+
-                String.valueOf(first_root)+" and "+String.valueOf(second_root);
-        SingleCalculate newItem = new SingleCalculate(ID,newText,oldItem.getInputNumber() );
+        String newText;
+        if (first_root==oldItem.getInputNumber()){
+            newText="The number "+String.valueOf(oldItem.getInputNumber())+" is prime";
+        }
+        else {
+            newText = "Roots for " + String.valueOf(oldItem.getInputNumber()) + ": " +
+                    String.valueOf(first_root) + " and " + String.valueOf(second_root);
+        }
+        SingleCalculate newItem = new SingleCalculate(ID,newText,oldItem.getInputNumber(),oldItem.getCurrentNumberInCalculation());
         items.remove(oldItem);
         items.add(newItem);
 

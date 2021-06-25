@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<WorkInfo> workInfos) {
                 for (WorkInfo workInfo:workInfos){
                     if (workInfo.getState()==WorkInfo.State.RUNNING){
-//                        dataBase.editProgress(int percent);
+                        Data progress = workInfo.getProgress();
+                        dataBase.inProgress(progress.getLong("current",-1),workInfo.getId().toString());
                     }
                     else{
                         Data outputData = workInfo.getOutputData();
