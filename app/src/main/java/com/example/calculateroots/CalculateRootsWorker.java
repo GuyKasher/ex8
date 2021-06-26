@@ -26,8 +26,9 @@ public class CalculateRootsWorker extends Worker {
 
                 break;
             } else {
-                Log.d("num",String.valueOf(curRoot));
-                setProgressAsync(new Data.Builder().putLong("current",curRoot).build());
+                if (curRoot%100==0) {
+                   Log.d("num:" + inputNumber , "  " + String.valueOf(curRoot));
+                }setProgressAsync(new Data.Builder().putLong("current",curRoot).build());
                 curRoot += 1;
             }
         }

@@ -43,8 +43,8 @@ public class SingleCalculateDataBaseImpl implements Serializable {
 
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(CalculateRootsWorker.class).addTag("calculate_root")
                 .setInputData(new Data.Builder().putLong("inputNumber",inputNumber).build()).build();
-//        workManager.enqueue(request);
-        workManager.enqueueUniqueWork("job_"+String.valueOf(inputNumber), ExistingWorkPolicy.REPLACE,request);
+        workManager.enqueue(request);
+//        workManager.enqueueUniqueWork("job_"+String.valueOf(inputNumber), ExistingWorkPolicy.APPEND_OR_REPLACE,request);
         newCalculate.setId(request.getId().toString());
         this.items.add(newCalculate);
 

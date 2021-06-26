@@ -48,20 +48,24 @@ public class MainActivity extends AppCompatActivity {
         recyclerTodoItemsList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         LiveData<List<WorkInfo>> allCalculateRoots = workManager.getWorkInfosByTagLiveData("calculate_root");
-        allCalculateRoots.observe(this, new Observer<List<WorkInfo>>() {
+        allCalculateRoots.observeForever( new Observer<List<WorkInfo>>() {
             @Override
             public void onChanged(List<WorkInfo> workInfos) {
                 for (WorkInfo workInfo:workInfos){
-                    if (workInfo.getState()==WorkInfo.State.RUNNING){
-                        Data progress = workInfo.getProgress();
-                        dataBase.inProgress(progress.getLong("current",-1),workInfo.getId().toString());
-                    }
-                    else{
+                    if (workInfo.getState()==WorkInfo.State.SUCCEEDED){
+
                         Data outputData = workInfo.getOutputData();
                         dataBase.finishProgress(outputData.getLong("first_root",-1),outputData.getLong("second_root",-1),workInfo.getId().toString());
-                        adapter.notifyDataSetChanged();
 
                     }
+                    else{
+                        Data progress = workInfo.getProgress();
+                        dataBase.inProgress(progress.getLong("current",-1),workInfo.getId().toString());
+
+                    }
+                    adapter.notifyDataSetChanged();
+
+
                 }
             }
         });
