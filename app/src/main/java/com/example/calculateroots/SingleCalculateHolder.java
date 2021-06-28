@@ -27,4 +27,5 @@ public class SingleCalculateHolder extends RecyclerView.ViewHolder {
     public Context getContext() {
         return context;
     }
+
 }

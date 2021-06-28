@@ -10,10 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculateHolder> {
-    private SingleCalculateDataBaseImpl singleCalculateDataBaseImpl = SingleCalculateApplication.getInstance().getDataBase();
-
-    public SingleCalculateAdapter(@NonNull SingleCalculateDataBaseImpl singleCalculateDataBaseImpl) {
+     SingleCalculateDataBaseImpl singleCalculateDataBaseImpl ;
+    Context c;
+    public SingleCalculateAdapter(@NonNull SingleCalculateDataBaseImpl singleCalculateDataBaseImpl, Context c) {
         this.singleCalculateDataBaseImpl = singleCalculateDataBaseImpl;
+        this.c=c;
     }
 
 
@@ -27,10 +28,13 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
 
     @Override
     public void onBindViewHolder(@NonNull SingleCalculateHolder holder, int position) {
-
-        SingleCalculate singleCalculate = this.singleCalculateDataBaseImpl.getCurrentItems().get(position);
-
-
+//
+        SingleCalculate singleCalculate = this.singleCalculateDataBaseImpl.items.get(position);
+//        int currentPresent= (int) (singleCalculate.getCurrentNumberInCalculation()/singleCalculate.getInputNumber()*100);
+        holder.rootProgress.setText(singleCalculate.text);
+//        System.out.print(singleCalculate.getText());
+        holder.progressBar.setProgress(singleCalculate.progress);
+//        holder.rootProgress.setText(holder.getCalculationText(singleCalculate));
         holder.deleteButton.setOnClickListener(v -> {
 
             singleCalculateDataBaseImpl.deleteItem(singleCalculate);
@@ -38,9 +42,7 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
             this.notifyDataSetChanged();
 
         });
-        int currentPresent= (int) (singleCalculate.getCurrentNumberInCalculation()/singleCalculate.getInputNumber()*100);
-        holder.progressBar.setProgress(currentPresent);
-        holder.rootProgress.setText(singleCalculate.getText());
+
 
 
 //        this.notifyDataSetChanged();

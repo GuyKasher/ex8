@@ -12,14 +12,15 @@ public class SingleCalculateApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance=this;
+//        instance=this;
+
         this.dataBase=new SingleCalculateDataBaseImpl(this);
+
+
     }
 
-    private static SingleCalculateApplication instance=null;
-    public static SingleCalculateApplication getInstance(){
-        return instance;
-    }
+
+
 
 
 }
