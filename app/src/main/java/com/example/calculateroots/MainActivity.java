@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public UUID workerID = null;
     public SingleCalculateDataBaseImpl dataBase = null;
     WorkManager workManager;
-SingleCalculateApplication singeltonApp;
+    SingleCalculateApplication singeltonApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,8 @@ SingleCalculateApplication singeltonApp;
 
         singeltonApp=(SingleCalculateApplication) getApplication();
         workManager = WorkManager.getInstance(this);
+        singeltonApp.setWorkManager(workManager);
 
-        workManager.cancelAllWork();
-        workManager.pruneWork();
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("dataBase")) {
             dataBase = singeltonApp.getDataBase();

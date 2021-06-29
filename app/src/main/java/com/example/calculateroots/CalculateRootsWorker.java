@@ -32,8 +32,8 @@ public class CalculateRootsWorker extends Worker {
 
         // save id and number in the work's progress
 
-
-        for (long i = 2; i <= number; i++) {
+        long startingNumber=SingleCalculateApplication.getInstance().getDataBase().getSingleCalculateById(getId().toString()).currentNumberInCalculation;
+        for (long i =startingNumber ; i <= number; i++) {
             System.out.println("number " + number + ", calcProgress: " + i);
             if (i >= 1000 && (i % 1000 == 0)) {
                 // save the calculation progress in the work's progress

@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.UUID;
+
 public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculateHolder> {
      SingleCalculateDataBaseImpl singleCalculateDataBaseImpl ;
     Context c;
@@ -39,6 +41,7 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
 
             singleCalculateDataBaseImpl.deleteItem(singleCalculate);
 //            this.todoItemsDataBase.sortItems();
+            SingleCalculateApplication.getInstance().workManager.cancelWorkById(UUID.fromString(singleCalculate.id));
             this.notifyDataSetChanged();
 
         });

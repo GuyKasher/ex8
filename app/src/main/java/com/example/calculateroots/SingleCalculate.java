@@ -14,7 +14,7 @@ public class SingleCalculate implements Serializable {
     long root2;
     public SingleCalculate(long inputNumber){
         this.inputNumber=inputNumber;
-        this.currentNumberInCalculation=0;
+        this.currentNumberInCalculation=2;
         this.progress=0;
         this.text="Calculating roots for "+(inputNumber);
         this.id=" ";
