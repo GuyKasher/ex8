@@ -41,7 +41,7 @@ public class SingleCalculateAdapter extends RecyclerView.Adapter<SingleCalculate
 
             singleCalculateDataBaseImpl.deleteItem(singleCalculate);
 //            this.todoItemsDataBase.sortItems();
-            SingleCalculateApplication.getInstance().workManager.cancelWorkById(UUID.fromString(singleCalculate.id));
+            SingleCalculateApplication.getInstance().getWorkManager().cancelWorkById(UUID.fromString(singleCalculate.id));
             this.notifyDataSetChanged();
 
         });

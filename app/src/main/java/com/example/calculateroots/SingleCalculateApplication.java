@@ -15,7 +15,7 @@ public class SingleCalculateApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance=this;
-        workManager=null;
+        this.workManager=null;
         this.dataBase=new SingleCalculateDataBaseImpl(this);
 
 
@@ -30,5 +30,7 @@ public class SingleCalculateApplication extends Application {
         return instance;
     }
 
-
+    public WorkManager getWorkManager() {
+        return workManager;
+    }
 }
